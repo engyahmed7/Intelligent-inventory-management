@@ -1,7 +1,18 @@
 const httpStatus = require("http-status");
 const catchAsync = require("../../utils/catchAsync");
 const authService = require("../../services/auth.service");
+const { oauth2Client } = require("../../../config/googleDrive");
+const { User } = require("../../models");
+const jwt = require("jsonwebtoken");
 
+const scopes = [
+  "https://www.googleapis.com/auth/drive.file",
+  "https://www.googleapis.com/auth/userinfo.email",
+  "https://www.googleapis.com/auth/calendar.events",
+  "https://www.googleapis.com/auth/calendar.events.readonly",
+  "https://www.googleapis.com/auth/calendar.readonly",
+  "https://www.googleapis.com/auth/calendar",
+];
 const register = catchAsync(async (req, res) => {
   const user = await authService.registerUser(req.body);
   res.status(201).send({ user });
@@ -36,10 +47,56 @@ const resetPassword = catchAsync(async (req, res) => {
   res.status(200).send({ message: "Password has been reset successfully." });
 });
 
+const googleAuth = (req, res) => {
+  const token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInJvbGUiOiJTdXBlciBBZG1pbiIsImlhdCI6MTc0OTA0OTUwMCwiZXhwIjoxNzQ5MTM1OTAwfQ.jOpE3CS8XVcotCp3ePf5QUB72B0pBxBCawusbZZwI3s"; // Replace with actual JWT token from user session
+
+  if (!token) return res.status(401).json({ message: "No token provided" });
+
+  const url = oauth2Client.generateAuthUrl({
+    access_type: "offline",
+    prompt: "consent",
+    scope: scopes,
+    state: token,
+  });
+
+  res.redirect(url);
+};
+
+const googleCallback = async (req, res) => {
+  const { code, state } = req.query;
+
+  if (!state) return res.status(400).send({ message: "Missing user state." });
+
+  let decoded;
+  try {
+    decoded = jwt.verify(state, process.env.JWT_SECRET);
+    console.log("Decoded JWT:", decoded);
+  } catch (err) {
+    return res.status(401).send({ message: "Invalid or expired token." });
+  }
+
+  const { sub } = decoded;
+  console.log("User ID from JWT:", sub);
+  const { tokens } = await oauth2Client.getToken(code);
+  console.log("Google tokens received:", tokens);
+
+  const userData = await User.findOne({ where: { id: sub } });
+  if (!userData) {
+    return res.status(404).send({ message: "User not found." });
+  }
+  userData.googleTokens = tokens;
+  await userData.save();
+
+  res.status(200).send("Google Drive connected! Tokens saved.");
+};
+
 module.exports = {
   register,
   login,
   verifyEmail,
   requestPasswordReset,
   resetPassword,
+  googleAuth,
+  googleCallback,
 };

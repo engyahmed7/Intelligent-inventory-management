@@ -111,64 +111,6 @@ router.post("/login", validate(authValidation.login), authController.login);
 
 /**
  * @swagger
- * /auth/logout:
- *   post:
- *     summary: Log out a user
- *     tags: [Auth]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - refreshToken
- *             properties:
- *               refreshToken:
- *                 type: string
- *     responses:
- *       "204":
- *         description: Logout successful
- *       "400":
- *         description: Invalid refresh token
- */
-// router.post("/logout", validate(authValidation.logout), authController.logout);
-
-/**
- * @swagger
- * /auth/refresh-tokens:
- *   post:
- *     summary: Refresh authentication tokens
- *     tags: [Auth]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - refreshToken
- *             properties:
- *               refreshToken:
- *                 type: string
- *     responses:
- *       "200":
- *         description: Tokens refreshed successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/AuthTokens'
- *       "401":
- *         description: Invalid or expired refresh token
- */
-// router.post(
-//   "/refresh-tokens",
-//   validate(authValidation.refreshTokens),
-//   authController.refreshTokens
-// );
-
-/**
- * @swagger
  * /auth/forgot-password:
  *   post:
  *     summary: Request a password reset email

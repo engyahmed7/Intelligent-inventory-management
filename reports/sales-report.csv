@@ -1,0 +1,4 @@
+"📅 Date","🧾 Order ID","🧑‍🍳 Waiter involved","🛒 Items in Order","🧮 Total Cost","🗂️ Category Breakdown","📦 Order Status"
+"2025-06-04",1,"string","Croissant (x2), Large Item (x40), pizza (x2), 5Large Item (x5)",28211,"{""food"":49}","completed"
+"2025-06-04",2,"string","5Large Item (x5), 2 Large Item (x1)",9000,"{""food"":6}","completed"
+"2025-06-04",3,"new waiter","2 Large Item (x5), will expoire (x2)",5150,"{""food"":7}","completed"

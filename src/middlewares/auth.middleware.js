@@ -10,7 +10,7 @@ const { User } = require("../models");
 const authenticate = async (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return next(new ApiError(httpStatus.UNAUTHORIZED, "Please authenticate"));
+    return next(new ApiError(401, "Please authenticate"));
   }
 
   const token = authHeader.split(" ")[1];
@@ -30,23 +30,19 @@ const authenticate = async (req, res, next) => {
     });
 
     if (!user) {
-      return next(new ApiError(httpStatus.UNAUTHORIZED, "User not found"));
+      return next(new ApiError(401, "User not found"));
     }
-
-    // if (!user.emailVerified) {
-    //   return next(new ApiError(httpStatus.UNAUTHORIZED, 'Email not verified'));
-    // }
 
     req.user = user; 
     next();
   } catch (error) {
     if (error instanceof jwt.TokenExpiredError) {
-      return next(new ApiError(httpStatus.UNAUTHORIZED, "Token expired"));
+      return next(new ApiError(401, "Token expired"));
     }
     if (error instanceof jwt.JsonWebTokenError) {
-      return next(new ApiError(httpStatus.UNAUTHORIZED, "Invalid token"));
+      return next(new ApiError(401, "Invalid token"));
     }
-    return next(new ApiError(httpStatus.UNAUTHORIZED, "Authentication failed"));
+    return next(new ApiError(401, "Authentication failed"));
   }
 };
 

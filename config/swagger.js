@@ -12,7 +12,7 @@ const options = {
     },
     servers: [
       {
-        url: `/api`, 
+        url: "http://localhost:3000/api",
         description: "Development server",
       },
     ],
@@ -27,14 +27,14 @@ const options = {
     },
     security: [
       {
-        bearerAuth: [], 
+        bearerAuth: [],
       },
     ],
   },
   apis: [
     path.join(__dirname, "../src/api/routes/*.js"),
-    path.join(__dirname, "../src/models/*.js"), 
-    path.join(__dirname, "../src/validations/*.js"), 
+    path.join(__dirname, "../src/models/*.js"),
+    path.join(__dirname, "../src/validations/*.js"),
   ],
 };
 
