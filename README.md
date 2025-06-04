@@ -161,8 +161,8 @@ erDiagram
 
 - **Swagger UI**: `http://localhost:3000/api/docs`
 - **Postman Collection**:  
-  [![Run in Postman](https://run.pstmn.io/button.svg)](https://postman.com)
-  - Environment: `GeekyAir_Prod` (base URL: `https://api.geekyair.com`)
+  [![Run in Postman](https://run.pstmn.io/button.svg)](https://www.postman.com/maintenance-candidate-1003460/geekyair/documentation/ajphy62/geekyair)
+  - Environment: `GeekyAir_Dev` (base URL: `http://localhost:3000/api`)
 
 **Sample Endpoints**:  
 | Endpoint | Method | Role Access | Description |
