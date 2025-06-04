@@ -167,10 +167,10 @@ erDiagram
 **Sample Endpoints**:  
 | Endpoint | Method | Role Access | Description |
 |------------------------------|--------|---------------------|--------------------------------------|
-| `/api/items` | GET | All authenticated | Filter/sort items (e.g., `?sort=price&order=desc`) |
-| `/api/orders` | POST | Cashiers | Create new order |
-| `/api/reports/commissions` | GET | Admins/Cashiers | Generate waiter commissions report |
-| `/admin/items/import` | POST | Admins/Managers | Bulk import items via CSV |
+| ` /api/items ` | GET | All authenticated | Filter/sort items (e.g., ` ?sort=price&order=desc ` ) |
+| ` /api/orders ` | POST | Cashiers | Create new order |
+| ` /items/export/csv ` | GET | All authenticated | Export item inventory to a CSV file |
+| ` /items/import/csv ` | POST | Super Admins/Managers | Import items from a CSV file. Supports creating new items and updating existing ones based on ID. |
 
 ---
 
@@ -198,10 +198,32 @@ npm test
 
 ### ✨ **Bonus Features Implemented**
 
-1. **Gen AI Promotions** (via OpenAI API)
-2. **Auto-Discounts for Expiring Items**
-3. **Google Drive Sales Reports** (OAuth2)
-4. **Google Calendar Expiry Sync**
-5. **Swagger Documentation**
+1. ✅ **Gen AI Promotions**
 
----
+   * Integrated with **OpenAI API** to auto-generate 3 promotional messages (for SMS/social media).
+   * Triggered email alerts to **Admins** for:
+
+     * Newly added **Food** items with price ≥ 200.
+     * Items with **500+ sales in the last 10 days**.
+
+2. ✅ **Auto-Discounts for Expiring Items**
+
+   * Items expiring within **20 days** receive a **25% automatic discount**.
+   * Both **original and discounted prices** are displayed.
+   * Admins/Managers are notified via email and have control to **exclude specific items/categories**.
+
+3. ✅ **Google Drive Sales Reports**
+
+   * Integrated **Google OAuth2** to allow Admins/Managers to **connect their Google Drive account**.
+   * Daily/weekly sales reports (CSV or PDF) are automatically exported to a **specified Drive folder**.
+
+4. ✅ **Google Calendar Expiry Sync**
+
+   * Integrated with **Google Calendar via OAuth2**.
+   * Automatically adds calendar events like:
+     `"Use by 25/05: 50 sandwiches"` for items nearing expiry.
+
+5. ✅ **Swagger Documentation**
+
+   * Full API documentation implemented using **Swagger (OpenAPI)**.
+   * Accessible at: `http://localhost:3000/api-docs`
