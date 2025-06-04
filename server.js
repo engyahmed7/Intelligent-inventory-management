@@ -84,7 +84,6 @@ sequelize
     process.exit(1);
   });
 
-
 const exitHandler = () => {
   if (server) {
     server.close(() => {

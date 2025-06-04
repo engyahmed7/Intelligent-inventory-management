@@ -14,20 +14,17 @@ const crypto = require("crypto");
 const addUser = async (userData, requestingUser) => {
   if (!["Super Admin", "Manager"].includes(requestingUser.role)) {
     throw new ApiError(
-      httpStatus.FORBIDDEN,
+      403,
       "Forbidden: Only Super Admins or Managers can add users."
     );
   }
 
   if (!["Cashier", "Waiter"].includes(userData.role)) {
-    throw new ApiError(
-      httpStatus.BAD_REQUEST,
-      "Invalid role. Can only add Cashier or Waiter."
-    );
+    throw new ApiError(400, "Invalid role. Can only add Cashier or Waiter.");
   }
 
   if (await User.findOne({ where: { email: userData.email } })) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "Email already taken");
+    throw new ApiError(400, "Email already taken");
   }
 
   const verificationToken = crypto.randomBytes(32).toString("hex");
@@ -61,7 +58,7 @@ const getUserById = async (userId) => {
     },
   });
   if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+    throw new ApiError(400, "User not found");
   }
   return user;
 };

@@ -10,7 +10,7 @@ const addUser = catchAsync(async (req, res) => {
 
 const getUser = catchAsync(async (req, res) => {
   const user = await userService.getUserById(req.params.userId);
-  res.send(user);
+  res.status(200).send(user);
 });
 
 module.exports = {

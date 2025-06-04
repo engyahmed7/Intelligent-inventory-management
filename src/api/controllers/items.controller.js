@@ -10,7 +10,7 @@ const createItem = catchAsync(async (req, res) => {
 });
 
 const getItems = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ["category"]); 
+  const filter = pick(req.query, ["category"]);
   const options = pick(req.query, ["sortBy", "sortOrder", "limit", "page"]);
 
   const result = await itemService.queryItems(filter, options, req.user);
@@ -29,7 +29,7 @@ const updateItem = catchAsync(async (req, res) => {
 
 const deleteItem = catchAsync(async (req, res) => {
   await itemService.deleteItemById(req.params.itemId);
-  res.status(204).send();
+  res.status(200).send({ message: "Item deleted successfully." });
 });
 
 const exportItems = catchAsync(async (req, res) => {
@@ -54,6 +54,6 @@ module.exports = {
   getItem,
   updateItem,
   deleteItem,
-  exportItems, 
-  importItems, 
+  exportItems,
+  importItems,
 };

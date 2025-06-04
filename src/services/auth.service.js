@@ -47,7 +47,7 @@ const loginUser = async (email, password) => {
   }
 
   const token = generateAuthToken(user.id, user.role);
-  user.password = undefined; 
+  user.password = undefined;
   return { user, token };
 };
 
@@ -74,7 +74,9 @@ const generateAuthToken = (userId, role) => {
  * @returns {Promise<void>}
  */
 const verifyEmail = async (token) => {
-  const user = await User.findOne({ where: { verificationToken: token, emailVerified: false } });
+  const user = await User.findOne({
+    where: { verificationToken: token, emailVerified: false },
+  });
 
   console.log(user);
   if (!user) {
@@ -82,7 +84,7 @@ const verifyEmail = async (token) => {
   }
 
   user.emailVerified = true;
-  user.verificationToken = null; 
+  user.verificationToken = null;
   await user.save();
 };
 
@@ -99,10 +101,10 @@ const requestPasswordReset = async (email) => {
 
   const resetToken = crypto.randomBytes(32).toString("hex");
   user.resetPasswordToken = resetToken;
-  user.resetPasswordExpires = Date.now() + 3600000; 
+  user.resetPasswordExpires = Date.now() + 3600000;
   await user.save();
 
-  const resetUrl = `${config.baseUrl}/reset-password?token=${resetToken}`; 
+  const resetUrl = `${config.baseUrl}/api/auth/reset-password?token=${resetToken}`;
   const subject = "Password Reset Request";
   const text = `You requested a password reset. Click the following link to reset your password: ${resetUrl}\nIf you did not request this, please ignore this email.`;
   const html = `<p>You requested a password reset. Click the following link to reset your password:</p><a href="${resetUrl}">${resetUrl}</a><p>If you did not request this, please ignore this email.</p>`;
@@ -120,13 +122,13 @@ const resetPassword = async (token, newPassword) => {
   const user = await User.findOne({
     where: {
       resetPasswordToken: token,
-      resetPasswordExpires: { [require("sequelize").Op.gt]: Date.now() }, 
+      resetPasswordExpires: { [require("sequelize").Op.gt]: Date.now() },
     },
   });
 
   if (!user) {
     throw new ApiError(
-      httpStatus.BAD_REQUEST,
+      400,
       "Password reset token is invalid or has expired"
     );
   }

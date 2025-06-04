@@ -10,7 +10,6 @@ jest.mock("../../src/models", () => ({
     transaction: jest.fn(),
   },
 }));
-// Provide a real ApiError constructor for .toThrow(ApiError) to work
 jest.mock("../../src/utils/ApiError", () => {
   return class ApiError extends Error {
     constructor(status, message) {
