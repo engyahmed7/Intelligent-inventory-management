@@ -124,6 +124,58 @@ router
 
 /**
  * @swagger
+ * /orders/{orderId}/items/bulk:
+ *   post:
+ *     summary: Add multiple items to a specific order
+ *     tags: [Orders]
+ *     description: Cashiers can add multiple items to a pending order in bulk.
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: orderId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID of the order to modify
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - items
+ *             properties:
+ *               items:
+ *                 type: array
+ *                 items:
+ *                   $ref: "#/components/schemas/OrderItemInput"
+ *     responses:
+ *       200:
+ *         description: Items added successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Order'
+ *       400:
+ *         description: Invalid input, insufficient stock, or order not pending
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ *       404:
+ *         description: Order or item not found
+ */
+router.post(
+  "/:orderId/items/bulk",
+  authenticate,
+  authorize(["Cashier"]),
+  validate(orderValidation.addItemsToOrder),
+  ordersController.addItemsToOrder
+);
+/**
+ * @swagger
  * /orders/{orderId}/items:
  *   post:
  *     summary: Add an item to a specific order
@@ -132,7 +184,7 @@ router
  *     security:
  *       - bearerAuth: []
  *     parameters:
- *       - in: path
+ *       - in: paths
  *         name: orderId
  *         required: true
  *         schema:

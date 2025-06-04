@@ -13,6 +13,26 @@ const createOrder = [
     .withMessage(`Status must be one of: ${orderStatuses.join(", ")}`),
 ];
 
+const addItemsToOrder = [
+  param("orderId")
+    .isInt({ min: 1 })
+    .withMessage("Order ID must be a positive integer"),
+  body("items")
+    .isArray({ min: 1 })
+    .withMessage("Items must be a non-empty array")
+    .custom((items) => {
+      for (const item of items) {
+        if (typeof item.itemId !== "number" || item.itemId <= 0) {
+          throw new Error("Item ID must be a positive integer");
+        }
+        if (typeof item.quantity !== "number" || item.quantity <= 0) {
+          throw new Error("Quantity must be a positive integer greater than 0");
+        }
+      }
+      return true;
+    }),
+];
+
 const modifyOrderItem = [
   param("orderId")
     .isInt({ min: 1 })
@@ -100,4 +120,5 @@ module.exports = {
   getOrder,
   getOrders,
   createOrder,
+  addItemsToOrder,
 };

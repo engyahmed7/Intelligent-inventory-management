@@ -138,6 +138,76 @@ const addItemToOrder = async (orderId, itemId, quantity) => {
 };
 
 /**
+ * Add multiple items to an existing order or update their quantities.
+ * @param {number} orderId
+ * @param {Array<{ itemId: number, quantity: number }>} items
+ * @returns {Promise<Order>}
+ */
+const addItemsToOrder = async (orderId, items) => {
+  const order = await Order.findByPk(orderId);
+  if (!order) throw new ApiError(404, "Order not found");
+  if (order.status !== "pending")
+    throw new ApiError(400, "Cannot modify items in a non-pending order");
+
+  const transaction = await sequelize.transaction();
+  try {
+    for (const { itemId, quantity } of items) {
+      const item = await checkItemAvailability(itemId);
+
+      let orderItem = await OrderItem.findOne({
+        where: { orderId, itemId },
+        transaction,
+      });
+
+      if (orderItem) {
+        const quantityChange = quantity - orderItem.quantity;
+        if (item.stockQuantity < quantityChange) {
+          throw new ApiError(
+            400,
+            `Insufficient stock for item "${item.name}". Available: ${item.stockQuantity}`
+          );
+        }
+        orderItem.quantity = quantity;
+        orderItem.priceAtOrder = item.price;
+        await orderItem.save({ transaction });
+        item.stockQuantity -= quantityChange;
+      } else {
+        if (item.stockQuantity < quantity) {
+          throw new ApiError(
+            400,
+            `Insufficient stock for item "${item.name}". Available: ${item.stockQuantity}`
+          );
+        }
+        await OrderItem.create(
+          { orderId, itemId, quantity, priceAtOrder: item.price },
+          { transaction }
+        );
+        item.stockQuantity -= quantity;
+      }
+
+      await item.save({ transaction });
+    }
+
+    const totalCost = await calculateOrderTotal(orderId, transaction);
+    order.totalCost = totalCost;
+    await order.save({ transaction });
+
+    await transaction.commit();
+
+    checkSalesMilestone().catch((err) => {
+      console.error("Error checking sales milestone:", err);
+    });
+
+    return Order.findByPk(orderId, {
+      include: [{ model: OrderItem, as: "orderItems", include: [Item] }],
+    });
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
+};
+
+/**
  * Create a new order
  * @param {Object} orderBody
  * @returns {Promise<Order>}
@@ -448,4 +518,5 @@ module.exports = {
   getOrderById,
   queryOrders,
   checkSalesMilestone,
+  addItemsToOrder,
 };

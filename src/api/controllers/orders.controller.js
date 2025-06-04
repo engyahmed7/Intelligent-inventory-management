@@ -15,6 +15,18 @@ const addItemToOrder = catchAsync(async (req, res) => {
   res.send(order);
 });
 
+const addItemsToOrder = catchAsync(async (req, res) => {
+  const { orderId } = req.params;
+  const { items } = req.body;
+
+  if (!Array.isArray(items) || items.length === 0) {
+    throw new ApiError(400, "Items must be a non-empty array");
+  }
+
+  const order = await orderService.addItemsToOrder(orderId, items);
+  res.send(order);
+});
+
 const removeItemFromOrder = catchAsync(async (req, res) => {
   const { orderId, itemId } = req.params;
   const order = await orderService.removeItemFromOrder(orderId, itemId);
@@ -49,4 +61,5 @@ module.exports = {
   updateOrder,
   getOrder,
   getOrders,
+  addItemsToOrder,
 };
