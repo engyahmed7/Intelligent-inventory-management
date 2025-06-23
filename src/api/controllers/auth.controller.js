@@ -48,10 +48,11 @@ const resetPassword = catchAsync(async (req, res) => {
 });
 
 const googleAuth = (req, res) => {
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInJvbGUiOiJTdXBlciBBZG1pbiIsImlhdCI6MTc0OTA0OTUwMCwiZXhwIjoxNzQ5MTM1OTAwfQ.jOpE3CS8XVcotCp3ePf5QUB72B0pBxBCawusbZZwI3s"; // Replace with actual JWT token from user session
-
-  if (!token) return res.status(401).json({ message: "No token provided" });
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ message: "No token provided" });
+  }
+  const token = authHeader.split(" ")[1];
 
   const url = oauth2Client.generateAuthUrl({
     access_type: "offline",
