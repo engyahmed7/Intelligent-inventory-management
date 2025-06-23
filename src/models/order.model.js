@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
       },
       status: {
-        type: DataTypes.ENUM("pending", "completed", "expired", "cancelled"), // Added cancelled for flexibility
+        type: DataTypes.ENUM("pending", "completed", "expired", "cancelled"),
         allowNull: false,
         defaultValue: "pending",
       },
@@ -22,56 +22,41 @@ module.exports = (sequelize, DataTypes) => {
       },
       waiterId: {
         type: DataTypes.INTEGER,
-        allowNull: true, // An order might be created before a waiter is assigned
+        allowNull: true,
         references: {
-          model: "Users", // Assumes your User model table name is 'Users'
+          model: "Users",
           key: "id",
         },
         onUpdate: "CASCADE",
-        onDelete: "SET NULL", // Or restrict, depending on requirements
+        onDelete: "SET NULL",
       },
-      // Optional: Add cashierId if needed to track who created the order
-      // cashierId: {
-      //   type: DataTypes.INTEGER,
-      //   allowNull: false,
-      //   references: {
-      //     model: 'Users',
-      //     key: 'id'
-      //   }
-      // }
     },
     {
-      timestamps: true, // Adds createdAt and updatedAt
+      timestamps: true,
       indexes: [
         { fields: ["status"] },
         { fields: ["waiterId"] },
-        { fields: ["createdAt"] }, // Index for finding old pending orders
+        { fields: ["createdAt"] },
       ],
     }
   );
 
   Order.associate = (models) => {
-    // Order belongs to one Waiter
     Order.belongsTo(models.User, {
       foreignKey: "waiterId",
       as: "waiter",
     });
 
-    // Order can have many Items through OrderItem
     Order.belongsToMany(models.Item, {
       through: models.OrderItem,
       foreignKey: "orderId",
       as: "items",
     });
 
-    // Direct association to OrderItem to easily fetch quantities/details
     Order.hasMany(models.OrderItem, {
       foreignKey: "orderId",
       as: "orderItems",
     });
-
-    // Optional: Order belongs to one Cashier
-    // Order.belongsTo(models.User, { foreignKey: 'cashierId', as: 'cashier' });
   };
 
   return Order;

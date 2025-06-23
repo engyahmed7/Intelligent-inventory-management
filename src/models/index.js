@@ -6,7 +6,6 @@ const dbConfig = require("../../config/database")[config.env];
 
 const db = {};
 
-// Initialize Sequelize
 const sequelize = new Sequelize(
   dbConfig.database,
   dbConfig.username,
@@ -26,7 +25,6 @@ const sequelize = new Sequelize(
   }
 );
 
-// Load models dynamically
 fs.readdirSync(__dirname)
   .filter((file) => {
     return (
@@ -40,7 +38,6 @@ fs.readdirSync(__dirname)
     db[model.name] = model;
   });
 
-// Apply associations
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);

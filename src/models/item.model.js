@@ -51,7 +51,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       timestamps: true,
-      // Add indexes for frequently filtered/sorted columns
       indexes: [
         { fields: ["name"] },
         { fields: ["category"] },
@@ -62,7 +61,6 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Item.associate = (models) => {
-    // Item can be part of many Orders through OrderItem
     Item.belongsToMany(models.Order, {
       through: models.OrderItem,
       foreignKey: "itemId",

@@ -66,19 +66,15 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  // Instance method to check password
   User.prototype.isValidPassword = async function (password) {
     return await bcrypt.compare(password, this.password);
   };
 
   User.associate = (models) => {
-    // A Waiter can be assigned to many Orders
     User.hasMany(models.Order, {
       foreignKey: "waiterId",
       as: "servedOrders",
     });
-    // A Cashier can create many Orders (optional association, might not be needed directly)
-    // User.hasMany(models.Order, { foreignKey: 'cashierId', as: 'createdOrders' });
   };
 
   return User;
