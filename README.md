@@ -1,4 +1,4 @@
-# GeekyAir: Inventory & Order Management System  
+# Inventory & Order Management System  
 > _Elevating hospitality operations with AI-driven efficiency._
 
 [![Node.js](https://img.shields.io/badge/Node.js-18.x-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/) [![Express](https://img.shields.io/badge/Express-4.x-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/) [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15.x-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/) [![Swagger](https://img.shields.io/badge/Swagger-3.0-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)](https://swagger.io/)
@@ -27,25 +27,7 @@ graph LR
 
 ## 🌟 **Key Features**
 
-### **1. Intelligent Inventory Management**
-- **Role-Based CRUD Operations**: Admins/Managers create/update items; waiters view non-expired items only.
-- **Smart Notifications**: Automated email alerts 5 days before + on expiry day.
-- **Discount Automation**: 25% discount applied to items expiring in ≤20 days.
-- **Advanced Filtering**: Sort by name, price, expiry, or stock value (price × quantity).
-
-### **2. Order Processing Engine**
-- **Real-Time Status Updates**: Orders auto-expire after 4 hours if pending.
-- **Multi-Item Orders**: Calculate totals dynamically; assign orders to waiters.
-- **Expiry Enforcement**: Prevent expired items from being added.
-
-### **3. Secure Authentication**
-- **Role-Based Access Control (RBAC)**:
-  - **Super Admin/Managers**: Full system control.
-  - **Cashiers**: Manage orders.
-  - **Waiters**: View assigned orders/items.
-- **Email Verification + Password Reset**.
-
-### **4. AI-Powered Analytics**
+### **1. AI-Powered Analytics**
 - **Waiter Commission Reports**:
   - Filter by date/waiter; export CSV via `?export=true&format=csv`.
   - Commissions: Food (1%), Beverages (0.5%), Others (0.25%).
@@ -61,7 +43,7 @@ graph LR
     - Items with **500+ sales in the last 10 days**.
   - Admins receive email alerts with generated promos.
 
-### **5. Automated Integrations**
+### **2. Automated Integrations**
 
 - **Google Drive**:
   - Auto-export sales reports (CSV/PDF) using **OAuth2 authentication**.
@@ -73,6 +55,24 @@ graph LR
   - Events like `"Use by 25/05: 50 sandwiches"` are created automatically.
   - Helps track perishable inventory before expiration.
   - Uses OAuth2 tokens securely stored and reused across sessions.
+
+### **3. Intelligent Inventory Management**
+- **Role-Based CRUD Operations**: Admins/Managers create/update items; waiters view non-expired items only.
+- **Smart Notifications**: Automated email alerts 5 days before + on expiry day.
+- **Discount Automation**: 25% discount applied to items expiring in ≤20 days.
+- **Advanced Filtering**: Sort by name, price, expiry, or stock value (price × quantity).
+
+### **4. Order Processing Engine**
+- **Real-Time Status Updates**: Orders auto-expire after 4 hours if pending.
+- **Multi-Item Orders**: Calculate totals dynamically; assign orders to waiters.
+- **Expiry Enforcement**: Prevent expired items from being added.
+
+### **5. Secure Authentication**
+- **Role-Based Access Control (RBAC)**:
+  - **Super Admin/Managers**: Full system control.
+  - **Cashiers**: Manage orders.
+  - **Waiters**: View assigned orders/items.
+- **Email Verification + Password Reset**.
 
 ---
 
@@ -143,7 +143,7 @@ erDiagram
    DB_PORT=5432
    DB_USER=postgres
    DB_PASS=your_password
-   DB_NAME=geekyair
+   DB_NAME=intelligent_inv
    JWT_SECRET=super_secret_key
    SMTP_HOST=smtp.example.com # For email alerts
    GOOGLE_API_KEY=YOUR_GOOGLE_API_KEY
