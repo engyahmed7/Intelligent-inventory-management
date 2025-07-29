@@ -127,8 +127,8 @@ erDiagram
 
 1. **Clone Repository**:
    ```bash
-   git clone https://github.com/engyahmed7/GeekyAir-assesment.git 
-   cd GeekyAir-assesment
+   git clone https://github.com/engyahmed7/Intelligent-inventory-management.git 
+   cd Intelligent-inventory-management
    ```
 
 2. **Install Dependencies**:
@@ -167,7 +167,7 @@ erDiagram
 
 - **Swagger UI**: [http://localhost:3000/api/docs](http://localhost:3000/api/docs)
 - **Postman Collection**:  
-  [![Run in Postman](https://run.pstmn.io/button.svg)](https://www.postman.com/maintenance-candidate-1003460/geekyair/documentation/ajphy62/geekyair)  
+  [![Run in Postman](https://run.pstmn.io/button.svg)](https://www.postman.com/dental-link/geekyair/collection/crxy99n/geekyair?action=share&creator=21173144&active-environment=21173144-44c43f48-6d37-4775-84ec-85721b0861ad)  
   - Environment: `GeekyAir_Dev` (base URL: `http://localhost:3000/api`)
 
 ### Sample Endpoints
