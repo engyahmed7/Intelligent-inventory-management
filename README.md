@@ -5,7 +5,7 @@
 
 ---
 
-## ⚙️ **System Architecture**
+## **System Architecture**
 
 ```mermaid
 graph LR
@@ -25,7 +25,7 @@ graph LR
 
 ---
 
-## 🌟 **Key Features**
+## **Key Features**
 
 ### **1. AI-Powered Analytics**
 - **Waiter Commission Reports**:
@@ -76,7 +76,7 @@ graph LR
 
 ---
 
-## 🗃️ **Database Schema**
+## **Database Schema**
 
 ```mermaid
 erDiagram
@@ -117,7 +117,7 @@ erDiagram
 
 ---
 
-## 🚀 **Setup Guide**
+## **Setup Guide**
 
 ### **Prerequisites**
 - Node.js v18+
@@ -163,7 +163,7 @@ erDiagram
 
 ---
 
-## 📚 **API Documentation**
+## **API Documentation**
 
 - **Swagger UI**: [http://localhost:3000/api/docs](http://localhost:3000/api/docs)
 - **Postman Collection**:  
@@ -181,7 +181,7 @@ erDiagram
 
 ---
 
-## 🛠️ **Tech Stack**
+## **Tech Stack**
 
 ```mermaid
 graph LR
@@ -196,7 +196,7 @@ D --> H[Database Optimization]
 
 ---
 
-## 🧪 **Testing**
+## **Testing**
 
 ```bash
 npm test
@@ -204,7 +204,7 @@ npm test
 
 ---
 
-## ✨ **Bonus Features Implemented**
+## **Bonus Features Implemented**
 
 ✅ **Gen AI Promotions**  
 Integrated with **Gemini AI API** to auto-generate personalized promotional content tailored for multiple platforms (SMS, Instagram, Facebook).  
